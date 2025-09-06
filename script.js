@@ -1,7 +1,7 @@
-// Track "No" click counts per question (by step index)
+let clearClickCount = 0;
 const noClickCounts = {
-    3: 0, // "Would you like to walk..." question (step index 3)
-    4: 0  // "Would you suggest..." question (step index 4)
+    3: 0,
+    4: 0
 };
 
 
@@ -95,24 +95,23 @@ function renderStep() {
                     if (noClickCounts[currentStep] < 2) {
                         noClickCounts[currentStep]++;
 
-                        // Random move within ±100px
+                        // Random move ±100px
                         const maxShift = 100;
                         const randomX = (Math.random() * 2 - 1) * maxShift;
                         const randomY = (Math.random() * 2 - 1) * maxShift;
                         btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
 
-                        // Messages & durations per question and count
                         let message = "";
                         let popupDuration = 2000;
 
-                        if (currentStep === 3) {  // Walk question
+                        if (currentStep === 3) {  // Q1
                             if (noClickCounts[currentStep] === 1) {
                                 message = "I know you press \"No\" 😏";
                             } else if (noClickCounts[currentStep] === 2) {
                                 message = "Ok your Life Your chois & I really miss your voice-aaaa 😉";
                                 popupDuration = 4000;
                             }
-                        } else if (currentStep === 4) {  // Food question
+                        } else if (currentStep === 4) { // Q2
                             if (noClickCounts[currentStep] === 1) {
                                 message = "Really you want I remain hungry all-Day 🥲";
                             } else if (noClickCounts[currentStep] === 2) {
@@ -146,7 +145,15 @@ function renderStep() {
         sendBtn.onclick = sendWhatsApp;
         const clearBtn = document.createElement("button");
         clearBtn.textContent = "Clear";
-        clearBtn.onclick = () => localStorage.clear();
+        clearBtn.onclick = () => {
+            if (clearClickCount === 0) {
+                clearClickCount++;
+                showPopupMessage("Please aaaaaaaaaa ....", 2000);
+            } else {
+                localStorage.clear();
+            }
+        };
+
         optionsEl.appendChild(sendBtn);
         optionsEl.appendChild(clearBtn);
         nextBtn.style.display = "none";
@@ -181,7 +188,7 @@ for (let i = 0; i < 3; i++) {
     document.body.appendChild(leaf);
 }
 
-// After leaves are created, make the last leaf act as a play/pause button
+// last leaf - play/pause button
 const leaves = document.querySelectorAll('.leaf');
 const appleLeaf = leaves[leaves.length - 1];  // last leaf (apple)
 
