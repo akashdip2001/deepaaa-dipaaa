@@ -22,7 +22,7 @@ audio.addEventListener("ended", function() {
 
 
 const steps = [
-  { text: "New city, new faces, yet some person voices leave a mark." },
+  { text: "New city, new faces, yet some person's voice leave a mark." },
   { text: "I enjoyed talking with you — It isn't about replacing anyone, but because your presence feels light." },
   { text: "Even food became part of our talks — me joking about only Omelette until suggestions arrive 🤣" },
   { 
@@ -114,3 +114,4 @@ appleLeaf.addEventListener('click', function() {
     audio.pause();
   }
 });
+
