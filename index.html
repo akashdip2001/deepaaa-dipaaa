@@ -1,392 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>— a small scene —</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0f1720; --card:#0b1220; --accent:#9ae6b4; --muted:#9aa4b2;
-    --glass: rgba(255,255,255,0.03);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: linear-gradient(180deg,#071018 0%, #081423 55%, #07202b 100%);
-    color:#e6eef6; -webkit-font-smoothing:antialiased;
-    display:flex; align-items:center; justify-content:center; padding:24px;
-  }
-
-  .scene{
-    width:100%; max-width:820px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:18px; padding:28px; position:relative; overflow:hidden;
-    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
-    border:1px solid rgba(255,255,255,0.03);
-  }
-
-  /* floating leaves */
-  .leaf{
-    position:absolute; width:140px; height:140px; opacity:.08; pointer-events:none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24"><path fill="%2393c5a6" d="M12 2c4 2 6 6 6 10s-2 8-6 10c-4-2-6-6-6-10s2-8 6-10z"/></svg>');
-    background-size:contain; background-repeat:no-repeat;
-    animation: drift 12s linear infinite;
-  }
-  .leaf.l1{left:-40px; top:-20px; animation-duration:14s}
-  .leaf.l2{right:-50px; top:10px; transform:scale(.8); animation-duration:18s; opacity:.06}
-  .leaf.l3{left:20%; bottom:20%; transform:scale(.7); animation-duration:16s; opacity:.05}
-  @keyframes drift {
-    0% { transform: translateY(0) rotate(0) }
-    50% { transform: translateY(12px) rotate(8deg) }
-    100% { transform: translateY(-6px) rotate(-4deg) }
-  }
-
-  .header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-  .logo{
-    width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#1f2937,#0f1720);
-    display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-family:Nunito;
-    font-size:18px;box-shadow: inset 0 -6px 18px rgba(0,0,0,0.25);
-  }
-  h1{font-size:18px;margin:0}
-  p.lead{margin:0;color:var(--muted); font-size:13px}
-
-  .card{
-    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
-    border-radius:12px;padding:22px;margin-top:18px;border:1px solid rgba(255,255,255,0.03);
-    min-height:220px; display:flex;flex-direction:column;justify-content:center;
-  }
-
-  .slide{
-    transition: transform .45s cubic-bezier(.2,.9,.2,1), opacity .3s;
-    will-change:transform,opacity;
-  }
-  .controls{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:18px}
-  .btn{
-    background:linear-gradient(180deg,#132733,#0e1a22); color:#dff6e8;border:1px solid rgba(255,255,255,0.04);
-    padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(2,6,23,0.6);
-  }
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.03); color:var(--muted); font-weight:600}
-  .btn.primary{background:linear-gradient(180deg,#86efac,#2f855a); color:#042017; border:none}
-  .small{font-size:13px;color:var(--muted)}
-
-  .progress{height:6px;background:rgba(255,255,255,0.02);border-radius:6px;margin-top:18px;overflow:hidden}
-  .bar{height:6px;background:linear-gradient(90deg,#7ee7a1,#2dd4bf);width:0%}
-
-  /* modal */
-  .modal-back{position:fixed;inset:0;background:rgba(2,6,23,.6);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .18s}
-  .modal-back.open{opacity:1;pointer-events:auto}
-  .modal{background:#071423;border-radius:12px;padding:18px;max-width:420px;width:92%;border:1px solid rgba(255,255,255,0.03)}
-  .modal h3{margin:0 0 8px 0}
-  .modal p{margin:0 0 12px 0;color:var(--muted)}
-  .modal .row{display:flex;gap:8px;justify-content:flex-end}
-
-  /* grass */
-  .grass{position:absolute;left:0;right:0;bottom:-10px;height:80px;background:
-    radial-gradient(ellipse at bottom center, rgba(24,63,37,0.6) 0%, rgba(6,20,12,0.0) 60%);
-    pointer-events:none;
-  }
-  .grass:before{
-    content:""; position:absolute; left:0; right:0; bottom:0; height:24px;
-    background: linear-gradient(90deg,#08311a,#0b2b1a);
-    border-top-left-radius:30px;border-top-right-radius:30px; opacity:.9;
-  }
-
-  /* small responsive */
-  @media (max-width:520px){
-    .scene{padding:18px}
-    .card{min-height:200px}
-  }
-
-  /* text styles for story */
-  .story-title{font-weight:700;font-family:Nunito;margin-bottom:8px}
-  .story-text{color:#d9e8f2;line-height:1.55;font-size:15px}
-  .muted{color:var(--muted);font-size:13px}
-  .hint{color:var(--muted);font-size:13px;margin-top:10px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stepping Forward</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="leaf-animations.css">
 </head>
+
 <body>
-  <div class="scene" role="main" aria-label="A small scene">
-    <div class="leaf l1"></div>
-    <div class="leaf l2"></div>
-    <div class="leaf l3"></div>
-
-    <div class="header">
-      <div class="logo">note</div>
-      <div>
-        <h1>one small, careful note</h1>
-        <p class="lead">a gentle sequence — read by stepping forward</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div id="slideArea" class="slide">
-        <!-- slides injected by JS -->
-      </div>
-
-      <div class="controls">
-        <div class="small" id="progressText">1 / 5</div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <button id="prevBtn" class="btn ghost">Back</button>
-          <button id="nextBtn" class="btn primary">Next</button>
+    <div id="leaves">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        
+    <div class="container">
+        <div class="card">
+            <p id="story"></p>
+            <div id="options"></div>
+            <button id="nextBtn">Next</button>
         </div>
-      </div>
-
-      <div class="progress"><div id="bar" class="bar"></div></div>
     </div>
-
-    <div class="grass" aria-hidden="true"></div>
-  </div>
-
-  <!-- modal for yes/no -->
-  <div id="modal" class="modal-back" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h3 id="modalTitle">Question</h3>
-      <p id="modalText">Would you…?</p>
-
-      <div style="margin-top:8px">
-        <textarea id="secretMsg" placeholder="(optional) leave a private note..." style="width:100%;height:66px;border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#e6eef6"></textarea>
-      </div>
-
-      <div class="row" style="margin-top:12px">
-        <button id="modalNo" class="btn ghost">No</button>
-        <button id="modalYes" class="btn primary">Yes</button>
-      </div>
-    </div>
-  </div>
-
-<script>
-/*
-  NOTE: The most important explanatory sentence is stored below in base64.
-  It will be decoded at runtime and displayed in the story slide.
-  This makes it not immediately visible as plain English in the HTML.
-*/
-(function(){
-  // base64 of: Genuinely like her voice, vibe, and actions — not replacing my girlfriend, just enjoying her presence.
-  const encoded = "R2VudWluZWx5IGxpa2UgaGVyIHZvY2UsIHZpYmUsIGFuZCBhY3Rpb25zIMOgIC0gbm90IHJlcGxhY2luZyBteSBnaXJsbmZyaWVuZCwganVzdCBlbmpveWluZyBoZXIgcHJlc2VuY2Uu";
-  function decodeBase64(s){ try { return atob(s); } catch(e){ return ""; } }
-
-  const sentence = decodeBase64(encoded);
-
-  // slides content
-  const slides = [
-    {
-      title: "two days, an honest start",
-      text: [
-        "We trained together for two days. We spoke English, shared hometown pictures, and laughed about food.",
-        "You showed me photos from home; I noticed how you spoke and how you smiled."
-      ]
-    },
-    {
-      title: "a small, meaningful detail",
-      // this slide holds the important sentence decoded from JS (less obvious in source)
-      text: [
-        sentence
-      ]
-    },
-    {
-      title: "a boundary you set",
-      text: [
-        "You told me you prefer not to be messaged casually, and I heard that — clearly.",
-        "I respect the limit you asked for; I will not cross it."
-      ]
-    },
-    {
-      title: "what I miss",
-      text: [
-        "It isn't about replacing anyone back home. It is about a voice and the comfort of small exchanges.",
-        "Those short moments made ordinary things feel different — nothing more, nothing sudden."
-      ]
-    },
-    {
-      title: "a tiny request",
-      text: [
-        "Two yes/no questions — your answers stay in your browser unless you choose to send them.",
-        "Also, if you want to leave a small private note, it will remain local to your device."
-      ],
-      // triggers the first modal question flow
-      modal: {
-        id: "work",
-        title: "Would you like to walk/talk (5 min) at the end of the day?",
-        storageKey: "workWithMe"
-      }
-    },
-    {
-      title: "sick & food (fun)",
-      text: [
-        "If I call in sick, would you be open to sharing a monthly North-Indian food suggestion so I don't starve? (joke 😉)"
-      ],
-      modal: {
-        id: "food",
-        title: "Can you share a monthly North-Indian food suggestion (Yes/No)?",
-        storageKey: "foodSuggest"
-      }
-    },
-    {
-      title: "summary & send",
-      text: [
-        "When you press Send, WhatsApp will open with the answers (if you chose), ready to send to the number provided.",
-        "You can also keep everything private — nothing leaves your device until you tap Send."
-      ],
-      final: true
-    }
-  ];
-
-  // state
-  let idx = 0;
-  const total = slides.length;
-  const slideArea = document.getElementById("slideArea");
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const progressText = document.getElementById("progressText");
-  const bar = document.getElementById("bar");
-
-  const modalBack = document.getElementById("modal");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalText = document.getElementById("modalText");
-  const secretMsg = document.getElementById("secretMsg");
-  const modalYes = document.getElementById("modalYes");
-  const modalNo = document.getElementById("modalNo");
-
-  function render(){
-    const s = slides[idx];
-    progressText.textContent = (idx+1) + " / " + total;
-    bar.style.width = Math.round(((idx+1)/total)*100) + "%";
-
-    // build html for slide
-    let html = `<div class="story-title">${escapeHtml(s.title)}</div>`;
-    s.text.forEach(t => {
-      html += `<div class="story-text" style="margin-top:8px">${escapeHtml(t)}</div>`;
-    });
-
-    // if final slide, show send button and show saved answers
-    if (s.final){
-      const work = localStorage.getItem("workWithMe");
-      const food = localStorage.getItem("foodSuggest");
-      const secret = localStorage.getItem("secretNote") || "(none)";
-      html += `<div style="margin-top:14px" class="muted">Your current choices (stored locally):</div>`;
-      html += `<div style="margin-top:8px" class="small">End-of-day chat: <strong>${work ?? "not answered"}</strong></div>`;
-      html += `<div class="small">Monthly food help: <strong>${food ?? "not answered"}</strong></div>`;
-      html += `<div class="small">Private note: <strong>${escapeHtml(secret)}</strong></div>`;
-
-      html += `<div style="margin-top:12px;display:flex;gap:8px">` +
-              `<button id="sendBtn" class="btn primary">Send (WhatsApp)</button>` +
-              `<button id="clearBtn" class="btn ghost">Clear local answers</button>` +
-              `</div>`;
-    }
-
-    slideArea.innerHTML = html;
-    prevBtn.style.visibility = idx === 0 ? "hidden" : "visible";
-
-    if (s.modal && s.modal.id){
-      // show modal button to answer
-      nextBtn.textContent = "Answer";
-    } else {
-      nextBtn.textContent = (s.final ? "Finish" : "Next");
-    }
-
-    // attach send handler if present
-    if (s.final){
-      document.getElementById("sendBtn").addEventListener("click", onSend);
-      document.getElementById("clearBtn").addEventListener("click", () => {
-        localStorage.removeItem("workWithMe");
-        localStorage.removeItem("foodSuggest");
-        localStorage.removeItem("secretNote");
-        render();
-      });
-    }
-  }
-
-  function escapeHtml(t){
-    return String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
-  }
-
-  prevBtn.addEventListener("click", ()=>{
-    if (idx>0) idx--;
-    render();
-  });
-
-  nextBtn.addEventListener("click", ()=>{
-    const s = slides[idx];
-    if (s.modal){
-      openModal(s.modal);
-    } else {
-      if (idx < total-1) idx++;
-      render();
-    }
-  });
-
-  function openModal(mod){
-    modalTitle.textContent = mod.title;
-    modalText.textContent = ""; // we use the title as main
-    secretMsg.value = localStorage.getItem("secretNote") || "";
-    modalBack.classList.add("open");
-    secretMsg.focus();
-
-    function cleanUp(){
-      modalBack.classList.remove("open");
-      modalYes.removeEventListener("click", yesFunc);
-      modalNo.removeEventListener("click", noFunc);
-    }
-
-    function yesFunc(){
-      localStorage.setItem(mod.storageKey, "Yes");
-      localStorage.setItem("secretNote", secretMsg.value);
-      cleanUp();
-      // move forward after answer
-      if (idx < total-1) idx++;
-      render();
-    }
-    function noFunc(){
-      localStorage.setItem(mod.storageKey, "No");
-      localStorage.setItem("secretNote", secretMsg.value);
-      cleanUp();
-      if (idx < total-1) idx++;
-      render();
-    }
-
-    modalYes.addEventListener("click", yesFunc);
-    modalNo.addEventListener("click", noFunc);
-  }
-
-  // send to WhatsApp: build message from stored answers
-  function onSend(){
-    const number = "+917076033011"; // the number you provided
-    const work = localStorage.getItem("workWithMe") ?? "No response";
-    const food = localStorage.getItem("foodSuggest") ?? "No response";
-    const note = localStorage.getItem("secretNote") || "";
-
-    // The main explanation line is re-decoded here to include in the message.
-    const important = (function(){ try { return atob("${btoa('Genuinely like her voice, vibe, and actions — not replacing my girlfriend, just enjoying her presence.')}"); } catch(e){ return ""; } })();
-
-    // compose message text
-    const lines = [
-      "A small note shared here.",
-      "",
-      "Context:",
-      "– New to the city, we spoke for a short while in training and shared some moments.",
-      `– ${important}`,
-      "",
-      "Your answers (saved locally):",
-      `– End-of-day chat: ${work}`,
-      `– Monthly food suggestions: ${food}`,
-      "",
-      "Private note (if any):",
-      note || "(none)",
-      "",
-      "If you prefer to keep this private, that's perfectly fine — no pressure."
-    ];
-
-    const full = encodeURIComponent(lines.join("\n"));
-    const url = `https://wa.me/${number.replace(/\D/g,'')}?text=${full}`;
-
-    // open WhatsApp in a new tab/window (works on mobile too)
-    window.open(url, "_blank");
-  }
-
-  // initial render
-  render();
-})();
-</script>
+</div>
+    <script src="script.js"></script>
 </body>
+
 </html>
