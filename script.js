@@ -1,3 +1,26 @@
+// Playlist of audio files
+const audioFiles = [
+  "assets/song1.mp3",
+  "assets/song2.mp3"
+];
+
+let currentTrack = 0;
+
+// Create audio element dynamically
+const audio = document.createElement("audio");
+audio.id = "bgMusic";
+audio.src = audioFiles[currentTrack];
+audio.style.display = "none"; // Hide audio player
+document.body.appendChild(audio);
+
+// Play the next song automatically on ended
+audio.addEventListener("ended", function() {
+  currentTrack = (currentTrack + 1) % audioFiles.length;
+  audio.src = audioFiles[currentTrack];
+  audio.play();
+});
+
+
 const steps = [
   { text: "New city, new faces, yet some person voices leave a mark." },
   { text: "I enjoyed talking with you — It isn't about replacing anyone, but because your presence feels light." },
@@ -76,3 +99,18 @@ for (let i = 0; i < 3; i++) {
   leaf.classList.add("leaf");
   document.body.appendChild(leaf);
 }
+
+// After leaves are created, make the last leaf act as a play/pause button
+const leaves = document.querySelectorAll('.leaf');
+const appleLeaf = leaves[leaves.length - 1];  // last leaf (apple)
+
+appleLeaf.style.cursor = "pointer";
+appleLeaf.title = "Click to play/pause music";
+
+appleLeaf.addEventListener('click', function() {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+});
