@@ -64,7 +64,7 @@ const steps = [
         key: "walkTogether"
     },
     {
-        text: "Would you suggest the best North Indian food each month so I don’t stay hungry?",
+        text: "Would you suggest the best South Indian food each month so I don’t stay hungry?",
         options: ["Yes", "No"],
         key: "foodSuggestion"
     },
@@ -200,4 +200,5 @@ appleLeaf.addEventListener('click', function () {
         audio.pause();
     }
 });
+
 
