@@ -4,8 +4,6 @@ const noClickCounts = {
     4: 0
 };
 
-
-
 // Playlist of audio files
 const audioFiles = [
     "assets/song1.mp3",
@@ -148,7 +146,7 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Please aaaaaaaaaa ....", 2000);
+                showPopupMessage("Clear 🤣🤣 Think aaaaaaaaaa .... & Refresh the pg again", 2000);
             } else {
                 localStorage.clear();
             }
@@ -202,3 +200,4 @@ appleLeaf.addEventListener('click', function () {
         audio.pause();
     }
 });
+
