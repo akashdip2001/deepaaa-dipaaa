@@ -58,33 +58,30 @@ audio.addEventListener("ended", function () {
 
 // Increse time and add "X"
 
-function showPopupMessage(message, duration = 8000) {
+function showPopupMessage(message, duration = 8000, isClearMessage = false) {
     let popup = document.getElementById("popupMessage");
     if (!popup) {
         popup = document.createElement("div");
         popup.id = "popupMessage";
-        popup.style.position = "fixed";  // Keep this fixed
-        popup.style.top = "20%";         // Move higher up 
+        popup.style.position = "fixed";  
         popup.style.left = "50%";
         popup.style.transform = "translate(-50%, -50%)";
         popup.style.backgroundColor = "rgba(0,0,0,0.8)";
         popup.style.color = "white";
         popup.style.padding = "15px 25px";
         popup.style.borderRadius = "15px";
-        popup.style.zIndex = "10001";   // Higher than modal
+        popup.style.zIndex = "10001";   
         popup.style.fontSize = "1.2rem";
         popup.style.textAlign = "center";
         popup.style.opacity = "0";
         popup.style.transition = "opacity 0.5s ease";
         popup.style.minWidth = "250px";
-        popup.style.maxWidth = "90vw";  // Responsive width
+        popup.style.maxWidth = "90vw";  
         document.body.appendChild(popup);
     }
 
-    // Clear any existing timeout
-    if (popup.hideTimeout) {
-        clearTimeout(popup.hideTimeout);
-    }
+    // Adjust only for Clear button messages
+    popup.style.top = isClearMessage ? "40%" : "20%";
 
     // Set message with close button
     popup.innerHTML = `
@@ -113,16 +110,8 @@ function showPopupMessage(message, duration = 8000) {
 
     popup.style.opacity = "1";
 
-    // Add close button functionality
-    const closeBtn = document.getElementById("popupCloseBtn");
-    closeBtn.addEventListener('click', function () {
-        popup.style.opacity = "0";
-    });
-
-    // Auto-hide after duration
-    popup.hideTimeout = setTimeout(() => {
-        popup.style.opacity = "0";
-    }, duration);
+    document.getElementById("popupCloseBtn").onclick = () => popup.style.opacity = "0";
+    popup.hideTimeout = setTimeout(() => popup.style.opacity = "0", duration);
 }
 
 const steps = [
@@ -185,7 +174,7 @@ function renderStep() {
                                 message = "Really you want I remain hungry all-Day 🥲";
                             } else if (noClickCounts[currentStep] === 2) {
                                 message = "OK, next time If we meet, offer something good & you pay 😎";
-                                popupDuration = 8000;
+                                popupDuration = 15000;
                             }
                         }
 
@@ -217,7 +206,7 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Yes you are right ?? 🙃 <br> I just need a good friend not gf<br><br> that's why I first day tell you I already have a gf, I like your voice that's not mean ... I also like my dad and mom's voice.<br><br>Click \"Clear\" again to Start", 20000);
+                showPopupMessage("Yes you are right ?? 🙃 <br> I just need a good friend not gf<br><br> that's why I first day tell you I already have a gf, I like your voice that's not mean ... <br><br>I also like my dad and mom's voice, same like your's<br><br>Click \"Clear\" button to Start again", 30000, true);
             } else {
                 // Clear storage and reset counters
                 localStorage.clear();
@@ -234,7 +223,7 @@ function renderStep() {
                     renderStep();
                 };
 
-                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br>Actually if someone listens to me carefully, remembers, laughs, I really like it. That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 30000);
+                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br>Actually if someone listens to me carefully, remembers, laughs, I really like it. That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 50000, true);
             }
         };
 
@@ -307,5 +296,3 @@ document.body.appendChild(hintContainer);
 appleLeaf.addEventListener('click', function () {
     hintContainer.remove();
 }, { once: true });
-
-
