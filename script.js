@@ -236,7 +236,7 @@ function renderStep() {
                     renderStep();
                 };
 
-                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br><br>Actually if someone listens to me carefully, remembers my words & laugh with my words, I really like the person (girl or a boy it's not metter). That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 50000, true);
+                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br><br>Actually if someone listens to me carefully, remembers my words & laugh with my words, I really like the person (girl or a boy it's not matter). That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 50000, true);
             }
         };
 
@@ -309,4 +309,5 @@ document.body.appendChild(hintContainer);
 appleLeaf.addEventListener('click', function () {
     hintContainer.remove();
 }, { once: true });
+
 
