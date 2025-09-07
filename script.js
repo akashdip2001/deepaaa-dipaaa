@@ -217,7 +217,7 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Why Clear ??", 2000);
+                showPopupMessage("Why Clear ?? 🙃 <br><br> Click \"Clear\" again to Start", 2000);
             } else {
                 // Clear storage and reset counters
                 localStorage.clear();
@@ -307,3 +307,4 @@ document.body.appendChild(hintContainer);
 appleLeaf.addEventListener('click', function () {
     hintContainer.remove();
 }, { once: true });
+
