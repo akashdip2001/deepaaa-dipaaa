@@ -111,3 +111,41 @@ button:hover {
   animation: bounceUp 1.5s ease-in-out infinite;
   filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
 }
+
+/* Action buttons spacing */
+@media (max-width: 768px) {
+  .Action-button {
+    /* margin-top: 18%; */
+  }
+}
+
+/* Glass sliding animation */
+.btn-4 {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.btn-4 span {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-4:after {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -150px;
+  width: 50px;
+  height: 155px;
+  background: #fff;
+  opacity: 0.2;
+  transform: rotate(35deg);
+  animation: slideIn 4s infinite cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes slideIn {
+  0%   { left: -150px; }
+  40%  { left: 120%; }
+  90%  { left: -150%; }
+}
