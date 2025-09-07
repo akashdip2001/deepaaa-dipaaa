@@ -201,4 +201,23 @@ appleLeaf.addEventListener('click', function () {
     }
 });
 
+// Create hint elements (arrow + text)
+const hintContainer = document.createElement('div');
+hintContainer.id = 'musicHint';
 
+const clickText = document.createElement('div');
+clickText.id = 'clickText';
+clickText.textContent = 'Click to Play';
+
+const arrowUp = document.createElement('div');
+arrowUp.id = 'arrowUp';
+arrowUp.textContent = '⬇️';
+
+hintContainer.appendChild(clickText);
+hintContainer.appendChild(arrowUp);
+document.body.appendChild(hintContainer);
+
+// Remove hint when apple is clicked
+appleLeaf.addEventListener('click', function () {
+  hintContainer.remove();
+}, { once: true });
