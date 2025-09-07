@@ -226,7 +226,9 @@ function renderStep() {
                 noClickCounts[4] = 0;
 
                 // Change Send button into Start Again
-                sendBtn.textContent = "Start Again";
+                sendBtn.textContent = "";
+                sendBtn.classList.add("Action-button", "btn-4");
+                sendBtn.innerHTML = `<span>Start Again</span>`;
                 sendBtn.onclick = () => {
                     currentStep = 0;
                     renderStep();
