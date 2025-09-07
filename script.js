@@ -130,7 +130,7 @@ function showPopupMessage(message, duration = 8000, isClearMessage = false) {
 const steps = [
     { text: "New city, new faces, yet some person voices leave a mark." },
     { text: "I enjoyed talking with you — It isn't about replacing anyone, but because your presence feels light." },
-    { text: "Even food became part of our talks — me joking about only Omelette until suggestions arrive 🤣" },
+    { text: "Even food became part of our talks — me joking about only Omlet, until suggestions arrive 🤣" },
     {
         text: "Would you like to walk with me at the end of the day?",
         options: ["Yes", "No"],
@@ -309,3 +309,4 @@ document.body.appendChild(hintContainer);
 appleLeaf.addEventListener('click', function () {
     hintContainer.remove();
 }, { once: true });
+
