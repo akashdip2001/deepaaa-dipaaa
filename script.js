@@ -80,6 +80,11 @@ function showPopupMessage(message, duration = 8000, isClearMessage = false) {
         document.body.appendChild(popup);
     }
 
+    // ✅ clear any previous hide timer
+    if (popup.hideTimeout) {
+        clearTimeout(popup.hideTimeout);
+    }
+
     // Adjust only for Clear button messages
     popup.style.top = isClearMessage ? "40%" : "20%";
 
@@ -110,8 +115,16 @@ function showPopupMessage(message, duration = 8000, isClearMessage = false) {
 
     popup.style.opacity = "1";
 
-    document.getElementById("popupCloseBtn").onclick = () => popup.style.opacity = "0";
-    popup.hideTimeout = setTimeout(() => popup.style.opacity = "0", duration);
+    // Close button hides immediately
+    document.getElementById("popupCloseBtn").onclick = () => {
+        popup.style.opacity = "0";
+        clearTimeout(popup.hideTimeout); // ✅ also cancel timeout if manually closed
+    };
+
+    // ✅ schedule hide with new timer
+    popup.hideTimeout = setTimeout(() => {
+        popup.style.opacity = "0";
+    }, duration);
 }
 
 const steps = [
@@ -206,7 +219,7 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Yes you are right ?? 🙃 <br> I just need a good friend not gf<br><br> that's why I first day tell you I already have a gf, I like your voice that's not mean ... <br><br>I also like my dad and mom's voice, same like your's<br><br>Click \"Clear\" button to Start again", 30000, true);
+                showPopupMessage("Yes you are right ?? 🙃 <br> I just need a good friend not gf<br><br> that's why I first day tell you I already have a gf, I like your voice that's not mean ... <br><br>I also like my dad and mom's voice, same like your's<br><br>I genuinely see you as a good friend.<br><br><br>Click \"Clear\" button to Start again", 30000, true);
             } else {
                 // Clear storage and reset counters
                 localStorage.clear();
@@ -223,7 +236,7 @@ function renderStep() {
                     renderStep();
                 };
 
-                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br>Actually if someone listens to me carefully, remembers, laughs, I really like it. That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 50000, true);
+                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br><br>Actually if someone listens to me carefully, remembers my words & laugh with my words, I really like the person (girl or a boy it's not metter). That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 50000, true);
             }
         };
 
