@@ -115,7 +115,7 @@ function showPopupMessage(message, duration = 8000) {
 
     // Add close button functionality
     const closeBtn = document.getElementById("popupCloseBtn");
-    closeBtn.addEventListener('click', function() {
+    closeBtn.addEventListener('click', function () {
         popup.style.opacity = "0";
     });
 
@@ -217,9 +217,22 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Clear 🤣🤣 Think aaaaaaaaaa .... & Refresh the pg again", 8000);
+                showPopupMessage("Why Clear ??", 2000);
             } else {
+                // Clear storage and reset counters
                 localStorage.clear();
+                clearClickCount = 0;
+                noClickCounts[3] = 0;
+                noClickCounts[4] = 0;
+
+                // Change Send button into Start Again
+                sendBtn.textContent = "Start Again";
+                sendBtn.onclick = () => {
+                    currentStep = 0;
+                    renderStep();
+                };
+
+                showPopupMessage("Think again .... ", 3000);
             }
         };
 
@@ -290,5 +303,5 @@ document.body.appendChild(hintContainer);
 
 // Remove hint when apple is clicked
 appleLeaf.addEventListener('click', function () {
-  hintContainer.remove();
+    hintContainer.remove();
 }, { once: true });
