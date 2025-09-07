@@ -217,7 +217,7 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Yes you are right ?? 🙃 <br> I just need a good friend not gf<br><br> that's why I first day tell you I already have a gf, I like your voice that's not mean ... I also like my dad and mom's voice.<br><br>I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br>Actually if someone listens to me carefully, remembers, laughs, I really like it. That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>Click \"Clear\" again to Start", 20000);
+                showPopupMessage("Yes you are right ?? 🙃 <br> I just need a good friend not gf<br><br> that's why I first day tell you I already have a gf, I like your voice that's not mean ... I also like my dad and mom's voice.<br><br>Click \"Clear\" again to Start", 20000);
             } else {
                 // Clear storage and reset counters
                 localStorage.clear();
@@ -234,7 +234,7 @@ function renderStep() {
                     renderStep();
                 };
 
-                showPopupMessage("Think again .... ", 3000);
+                showPopupMessage("I had a friend like you in class 11, we always laughed and joked, nothing bad ever came to my mind. I may not talk to her now but I still respect her as a friend.<br>Actually if someone listens to me carefully, remembers, laughs, I really like it. That's why I went to talk at the end of the day. but I understand, these days, not everyone sees anything in a normal way<br><br>", 30000);
             }
         };
 
@@ -307,4 +307,5 @@ document.body.appendChild(hintContainer);
 appleLeaf.addEventListener('click', function () {
     hintContainer.remove();
 }, { once: true });
+
 
