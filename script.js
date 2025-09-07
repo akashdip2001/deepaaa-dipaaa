@@ -26,30 +26,101 @@ audio.addEventListener("ended", function () {
     audio.play();
 });
 
-function showPopupMessage(message, duration) {
+// Popup automatically hide after some sec
+
+// function showPopupMessage(message, duration) {
+//     let popup = document.getElementById("popupMessage");
+//     if (!popup) {
+//         popup = document.createElement("div");
+//         popup.id = "popupMessage";
+//         popup.style.position = "fixed";
+//         popup.style.top = "50%";
+//         popup.style.left = "50%";
+//         popup.style.transform = "translate(-50%, -50%)";
+//         popup.style.backgroundColor = "rgba(0,0,0,0.8)";
+//         popup.style.color = "white";
+//         popup.style.padding = "15px 25px";
+//         popup.style.borderRadius = "15px";
+//         popup.style.zIndex = "10000";
+//         popup.style.fontSize = "1.2rem";
+//         popup.style.textAlign = "center";
+//         popup.style.opacity = "0";
+//         popup.style.transition = "opacity 0.5s ease";
+//         document.body.appendChild(popup);
+//     }
+//     popup.textContent = message;
+//     popup.style.opacity = "1";
+
+//     setTimeout(() => {
+//         popup.style.opacity = "0";
+//     }, duration);
+// }
+
+// Increse time and add "X"
+
+function showPopupMessage(message, duration = 8000) {
     let popup = document.getElementById("popupMessage");
     if (!popup) {
         popup = document.createElement("div");
         popup.id = "popupMessage";
-        popup.style.position = "fixed";
-        popup.style.top = "50%";
+        popup.style.position = "fixed";  // Keep this fixed
+        popup.style.top = "20%";         // Move higher up 
         popup.style.left = "50%";
         popup.style.transform = "translate(-50%, -50%)";
         popup.style.backgroundColor = "rgba(0,0,0,0.8)";
         popup.style.color = "white";
         popup.style.padding = "15px 25px";
         popup.style.borderRadius = "15px";
-        popup.style.zIndex = "10000";
+        popup.style.zIndex = "10001";   // Higher than modal
         popup.style.fontSize = "1.2rem";
         popup.style.textAlign = "center";
         popup.style.opacity = "0";
         popup.style.transition = "opacity 0.5s ease";
+        popup.style.minWidth = "250px";
+        popup.style.maxWidth = "90vw";  // Responsive width
         document.body.appendChild(popup);
     }
-    popup.textContent = message;
+
+    // Clear any existing timeout
+    if (popup.hideTimeout) {
+        clearTimeout(popup.hideTimeout);
+    }
+
+    // Set message with close button
+    popup.innerHTML = `
+        <div style="position: relative; padding-top: 10px;">
+            <button id="popupCloseBtn" style="
+                position: absolute;
+                top: -30px;
+                right: -5px;
+                background: #ff4444;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 25px;
+                height: 25px;
+                font-size: 14px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                z-index: 1;
+            ">×</button>
+            <div>${message}</div>
+        </div>
+    `;
+
     popup.style.opacity = "1";
 
-    setTimeout(() => {
+    // Add close button functionality
+    const closeBtn = document.getElementById("popupCloseBtn");
+    closeBtn.addEventListener('click', function() {
+        popup.style.opacity = "0";
+    });
+
+    // Auto-hide after duration
+    popup.hideTimeout = setTimeout(() => {
         popup.style.opacity = "0";
     }, duration);
 }
@@ -100,21 +171,21 @@ function renderStep() {
                         btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
 
                         let message = "";
-                        let popupDuration = 2000;
+                        let popupDuration = 8000;
 
                         if (currentStep === 3) {  // Q1
                             if (noClickCounts[currentStep] === 1) {
                                 message = "I know you press \"No\" 😏";
                             } else if (noClickCounts[currentStep] === 2) {
                                 message = "Ok your Life Your chois & I really miss your voice-aaaa 😉";
-                                popupDuration = 4000;
+                                popupDuration = 8000;
                             }
                         } else if (currentStep === 4) { // Q2
                             if (noClickCounts[currentStep] === 1) {
                                 message = "Really you want I remain hungry all-Day 🥲";
                             } else if (noClickCounts[currentStep] === 2) {
                                 message = "OK, next time If we meet, offer something good & you pay 😎";
-                                popupDuration = 4000;
+                                popupDuration = 8000;
                             }
                         }
 
@@ -146,7 +217,7 @@ function renderStep() {
         clearBtn.onclick = () => {
             if (clearClickCount === 0) {
                 clearClickCount++;
-                showPopupMessage("Clear 🤣🤣 Think aaaaaaaaaa .... & Refresh the pg again", 2000);
+                showPopupMessage("Clear 🤣🤣 Think aaaaaaaaaa .... & Refresh the pg again", 8000);
             } else {
                 localStorage.clear();
             }
