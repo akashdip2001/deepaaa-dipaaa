@@ -42,16 +42,17 @@
         <div class="ticker-container">
             <div class="ticker-text">
                 Respect Women, <strong>Not Because They Are Women</strong> | Do Because
-                <a href="#" class="playMenSong" target="_blank">
+                <a href="#" class="playMenSong">
                     You are Men
                 </a>
+                <span class="apple-icon playMenSong">🍎</span>
             </div>
             <div class="ticker-text">
                 Respect Women, <strong>Not Because They Are Women</strong> | Do Because
-                <a href="#" class="playMenSong" target="_blank">
+                <a href="#" class="playMenSong">
                     You are Men
                 </a>
-                </a>
+                <span class="apple-icon playMenSong">🍎</span>
             </div>
         </div>
 
@@ -73,7 +74,22 @@
             texts.forEach(el => el.style.animationPlayState = 'running');
         });
         
-        // Play song10.mp3 when "You are Men" is clicked, pause other audios
+        // Add event listener for song10 ended event to auto-resume normal songs
+        document.getElementById('song10').addEventListener('ended', function() {
+            // Reset the flag
+            window.isPlayingMenSong = false;
+            
+            // Resume background music from saved position
+            const bgMusic = document.getElementById('bgMusic');
+            if (bgMusic && window.audioPositions['bgMusic'] !== undefined) {
+                bgMusic.currentTime = window.audioPositions['bgMusic'];
+                bgMusic.play().catch(err => {
+                    console.error('Audio play error:', err);
+                });
+            }
+        });
+        
+        // Play song10.mp3 when "You are Men" or apple icon is clicked, pause other audios
         document.querySelectorAll('.playMenSong').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();

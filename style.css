@@ -233,3 +233,20 @@ button:hover {
     transform: translateX(-100%);
   }
 }
+
+.apple-icon {
+  display: inline-block;
+  font-size: 1.5rem;
+  margin-left: 5px;
+  cursor: pointer;
+  position: relative;
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.7));
+}
+
+.apple-icon:hover {
+  transform: translateY(-8px) scale(1.2);
+  filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.9));
+}
