@@ -282,10 +282,35 @@ appleLeaf.style.cursor = "pointer";
 appleLeaf.title = "Click to play/pause music";
 
 appleLeaf.addEventListener('click', function () {
-    if (audio.paused) {
-        audio.play();
+    const song10 = document.getElementById('song10');
+    
+    // Check if the Men song is playing (from index.html script)
+    if (window.isPlayingMenSong) {
+        // Pause Men song and save position
+        song10.pause();
+        window.audioPositions['song10'] = song10.currentTime;
+        
+        // Resume background music from saved position
+        if (window.audioPositions['bgMusic'] !== undefined) {
+            audio.currentTime = window.audioPositions['bgMusic'];
+            audio.play().catch(err => {
+                console.error('Audio play error:', err);
+            });
+        } else {
+            audio.play();
+        }
+        
+        // Update flag
+        window.isPlayingMenSong = false;
     } else {
-        audio.pause();
+        // Normal play/pause for background music
+        if (audio.paused) {
+            audio.play();
+        } else {
+            audio.pause();
+            // Save position for background music
+            window.audioPositions['bgMusic'] = audio.currentTime;
+        }
     }
 });
 
@@ -309,5 +334,3 @@ document.body.appendChild(hintContainer);
 appleLeaf.addEventListener('click', function () {
     hintContainer.remove();
 }, { once: true });
-
-
