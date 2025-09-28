@@ -95,6 +95,59 @@
       display: block;
       opacity: 1;
     }
+
+    /* Secret trigger */
+    .secret-trigger {
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+    .secret-trigger:hover {
+      opacity: 1;
+    }
+
+    /* Hidden message box */
+    .hidden-message {
+      display: none;
+      position: absolute;
+      bottom: 60px;
+      right: 15px;
+      max-width: 350px;
+      background: rgba(255, 255, 255, 0.97);
+      color: #333;
+      padding: 1.2rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      line-height: 1.5;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease forwards;
+      white-space: pre-line;
+      z-index: 20;
+    }
+
+    .hidden-message .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      color: #666;
+      background: transparent;
+      border: none;
+    }
+    .hidden-message .close-btn:hover {
+      color: #000;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -102,23 +155,58 @@
 
   <div id="welcomeScreen" class="welcome-overlay">
     <p class="line">Some friendships don’t last forever…</p>
-    <p class="line">but they leave behind lessons and memories.</p>
-    <p class="line">Thank you for being part of my journey. 🌿</p>
+    <p class="line">yet the memories stay gentle in the heart.</p>
+    <p class="line">Thank you for being part of my story. 🌿</p>
     <button id="enterBtn" class="enter-button">Enter</button>
+  </div>
+
+  <!-- Secret trigger (tiny flower icon) -->
+  <div class="secret-trigger" id="secretTrigger">🌸</div>
+
+  <!-- Hidden heartfelt message -->
+  <div class="hidden-message" id="hiddenMessage">
+    <button class="close-btn" id="closeBtn">❌</button>
+    I can never forget the very first smile…  
+    it felt brighter than the place we stood in.  
+
+    Your laughter, your way of talking—  
+    even in a short span, it felt like a bond  
+    carved deeper than time could measure.  
+
+    I know my own boundaries,  
+    and maybe those limits pulled me back.  
+    But that never reduced the value you held.  
+
+    It hurts to step away,  
+    yet what stays is respect, gratitude, and the wish  
+    that your smile never fades. 🌿
   </div>
 
   <script>
     const enterBtn = document.getElementById("enterBtn");
     const welcomeScreen = document.getElementById("welcomeScreen");
     const mainIframe = document.getElementById("mainIframe");
+    const secretTrigger = document.getElementById("secretTrigger");
+    const hiddenMessage = document.getElementById("hiddenMessage");
+    const closeBtn = document.getElementById("closeBtn");
 
     enterBtn.addEventListener("click", () => {
-      // Fade out welcome
       welcomeScreen.style.opacity = "0";
       setTimeout(() => {
         welcomeScreen.style.display = "none";
         mainIframe.classList.add("active");
-      }, 1000); // matches CSS transition
+      }, 1000);
+    });
+
+    // Toggle hidden message on flower click
+    secretTrigger.addEventListener("click", () => {
+      hiddenMessage.style.display =
+        hiddenMessage.style.display === "block" ? "none" : "block";
+    });
+
+    // Close hidden message with ❌ button
+    closeBtn.addEventListener("click", () => {
+      hiddenMessage.style.display = "none";
     });
   </script>
 </body>
