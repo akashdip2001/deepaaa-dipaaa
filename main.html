@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hi D</title>
+    <!-- <link rel="icon" type="image/png" href="assets/logo.png"> -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍎</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="leaf-animations.css">
+</head>
+
+<body>
+    <div id="leaves">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+
+        <div class="container">
+            <div class="card">
+                <p id="story"></p>
+                <div id="options"></div>
+                <button id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <div class="ticker-container">
+            <div class="ticker-text">
+                Respect Women, <strong>Not Because They Are Women</strong> | Do Because
+                <a href="#" class="playMenSong">
+                    You are Men
+                </a>
+                <span class="apple-icon playMenSong">🍎</span>
+            </div>
+            <div class="ticker-text">
+                Respect Women, <strong>Not Because They Are Women</strong> | Do Because
+                <a href="#" class="playMenSong">
+                    You are Men
+                </a>
+                <span class="apple-icon playMenSong">🍎</span>
+            </div>
+        </div>
+
+    </div>
+    <audio id="song10" src="assets/footer-songs/song10.mp3" preload="auto"></audio>
+    <audio id="song11" src="assets/footer-songs/song11.mp3" preload="auto"></audio>
+    <script>
+        // Global variables for audio control
+        window.audioPositions = {};
+        window.isPlayingMenSong = false;
+        window.footerSongs = [
+            { id: "song10", src: "assets/footer-songs/song10.mp3" },
+            { id: "song11", src: "assets/footer-songs/song11.mp3" }
+        ];
+        window.currentFooterSong = 0;
+        
+        const ticker = document.querySelector('.ticker-container');
+        const texts = ticker.querySelectorAll('.ticker-text');
+
+        ticker.addEventListener('mouseover', () => {
+            texts.forEach(el => el.style.animationPlayState = 'paused');
+        });
+
+        ticker.addEventListener('mouseout', () => {
+            texts.forEach(el => el.style.animationPlayState = 'running');
+        });
+        
+        // Function to ensure smooth transitions between songs
+        function playNextFooterSong(currentIndex, nextIndex) {
+            // Update the current song index
+            window.currentFooterSong = nextIndex;
+            
+            // Get the next song element
+            const nextSong = document.getElementById(window.footerSongs[nextIndex].id);
+            
+            if (nextSong) {
+                // Make sure the next song is ready to play
+                nextSong.currentTime = 0; // Start from beginning
+                
+                // Use a small timeout to prevent any gap between songs
+                setTimeout(() => {
+                    nextSong.play().catch(err => {
+                        console.error('Error playing next song:', err);
+                    });
+                }, 50); // Small buffer time for smooth transition
+            }
+            
+            // Keep the flag true since we're still playing footer songs
+            window.isPlayingMenSong = true;
+        }
+        
+        // Add event listeners for footer songs to implement continuous playback
+        document.getElementById('song10').addEventListener('ended', function() {
+            // Play the next song in the footer songs playlist
+            playNextFooterSong(0, 1); // From song10 to song11
+        });
+        
+        // Add event listener for song11 ended event to auto-resume normal songs
+        document.getElementById('song11').addEventListener('ended', function() {
+            // Reset the flag
+            window.isPlayingMenSong = false;
+            window.currentFooterSong = 0; // Reset to first footer song
+            
+            // Resume background music from saved position
+            const bgMusic = document.getElementById('bgMusic');
+            if (bgMusic && window.audioPositions['bgMusic'] !== undefined) {
+                bgMusic.currentTime = window.audioPositions['bgMusic'];
+                bgMusic.play().catch(err => {
+                    console.error('Audio play error:', err);
+                });
+            }
+        });
+        
+        // Play footer songs when "You are Men" or apple icon is clicked, pause other audios
+        document.querySelectorAll('.playMenSong').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const bgMusic = document.getElementById('bgMusic');
+                
+                if (window.isPlayingMenSong) {
+                    // If already playing footer songs, stop them and resume background music
+                    const currentSongElement = document.getElementById(window.footerSongs[window.currentFooterSong].id);
+                    if (currentSongElement) {
+                        currentSongElement.pause();
+                        window.audioPositions[currentSongElement.id] = currentSongElement.currentTime;
+                    }
+                    
+                    // Reset to first song in playlist for next time
+                    window.currentFooterSong = 0;
+                    
+                    // Resume background music from saved position
+                    if (window.audioPositions['bgMusic'] !== undefined) {
+                        bgMusic.currentTime = window.audioPositions['bgMusic'];
+                        bgMusic.play().catch(err => {
+                            console.error('Audio play error:', err);
+                        });
+                    }
+                    
+                    window.isPlayingMenSong = false;
+                } else {
+                    // Save current positions of all audio elements
+                    document.querySelectorAll('audio').forEach(audio => {
+                        window.audioPositions[audio.id] = audio.currentTime;
+                        audio.pause();
+                    });
+                    
+                    // Play the first song in the footer songs playlist (song10)
+                    const firstSong = document.getElementById(window.footerSongs[0].id);
+                    if (firstSong) {
+                        console.log('Playing ' + window.footerSongs[0].src);
+                        if (window.audioPositions[firstSong.id] !== undefined) {
+                            firstSong.currentTime = window.audioPositions[firstSong.id];
+                        }
+                        firstSong.play().catch(err => {
+                            console.error('Audio play error:', err);
+                        });
+                        window.isPlayingMenSong = true;
+                        window.currentFooterSong = 0;
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
