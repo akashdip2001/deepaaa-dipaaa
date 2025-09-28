@@ -43,6 +43,7 @@
       max-width: 800px;
       padding: 2rem;
       z-index: 2;
+      transition: opacity 1s ease;
     }
 
     .line {
@@ -86,10 +87,13 @@
       height: 100vh;
       border: none;
       display: none;
+      opacity: 0;
+      transition: opacity 1.2s ease;
     }
 
     .main-iframe.active {
       display: block;
+      opacity: 1;
     }
   </style>
 </head>
@@ -97,9 +101,9 @@
   <iframe id="mainIframe" class="main-iframe" src="main.html"></iframe>
 
   <div id="welcomeScreen" class="welcome-overlay">
-    <p class="line">Not every friendship lasts forever.</p>
-    <p class="line">Some people come only to teach us something.</p>
-    <p class="line">Thank you for being part of my little journey. 🌿</p>
+    <p class="line">Some friendships don’t last forever…</p>
+    <p class="line">but they leave behind lessons and memories.</p>
+    <p class="line">Thank you for being part of my journey. 🌿</p>
     <button id="enterBtn" class="enter-button">Enter</button>
   </div>
 
@@ -109,8 +113,12 @@
     const mainIframe = document.getElementById("mainIframe");
 
     enterBtn.addEventListener("click", () => {
-      welcomeScreen.style.display = "none";
-      mainIframe.classList.add("active");
+      // Fade out welcome
+      welcomeScreen.style.opacity = "0";
+      setTimeout(() => {
+        welcomeScreen.style.display = "none";
+        mainIframe.classList.add("active");
+      }, 1000); // matches CSS transition
     });
   </script>
 </body>
