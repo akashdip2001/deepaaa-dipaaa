@@ -98,25 +98,121 @@
 
     /* Secret trigger */
     .secret-trigger {
-      position: absolute;
-      bottom: 10px;
-      right: 15px;
-      font-size: 22px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 28px;
       cursor: pointer;
-      opacity: 0.5;
-      transition: opacity 0.3s ease;
-      z-index: 10;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      animation: secretPulse 3s ease-in-out infinite;
     }
-    .secret-trigger:hover {
+
+    @keyframes secretPulse {
+      0%, 100% { 
+        opacity: 0.7; 
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 0.9; 
+        transform: scale(1.05);
+      }
+    }
+    
+    .secret-trigger:hover,
+    .secret-trigger:active {
       opacity: 1;
+      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Mobile-specific styles for secret trigger */
+    @media (max-width: 768px) {
+      .secret-trigger {
+        font-size: 32px;
+        width: 60px;
+        height: 60px;
+        bottom: max(25px, env(safe-area-inset-bottom, 25px));
+        right: max(25px, env(safe-area-inset-right, 25px));
+        opacity: 0.8;
+        background: rgba(255, 255, 255, 0.25);
+        border: 3px solid rgba(255, 255, 255, 0.4);
+      }
+    }
+
+    /* Extra small mobile devices */
+    @media (max-width: 480px) {
+      .secret-trigger {
+        font-size: 30px;
+        width: 55px;
+        height: 55px;
+        bottom: 20px;
+        right: 20px;
+        opacity: 0.9;
+      }
+    }
+
+    /* High DPI displays (like your Narzo 50 Pro 5G) */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .secret-trigger {
+        font-size: 34px;
+        width: 65px;
+        height: 65px;
+        opacity: 0.85;
+        border-width: 3px;
+      }
+    }
+
+    /* Specific for devices like Narzo 50 Pro 5G (1080x2400) */
+    @media screen and (min-width: 360px) and (max-width: 450px) and (min-height: 700px) {
+      .secret-trigger {
+        font-size: 36px !important;
+        width: 70px !important;
+        height: 70px !important;
+        bottom: 30px !important;
+        right: 30px !important;
+        opacity: 0.9 !important;
+        background: rgba(255, 255, 255, 0.3) !important;
+        border: 4px solid rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+      }
+      
+      .secret-trigger:hover,
+      .secret-trigger:active {
+        opacity: 1 !important;
+        transform: scale(1.15) !important;
+        background: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+
+    /* For very specific screen ratios (like 20:9 or 21:9) */
+    @media screen and (min-aspect-ratio: 18/9) {
+      .secret-trigger {
+        bottom: 40px !important;
+        font-size: 38px !important;
+        width: 75px !important;
+        height: 75px !important;
+        opacity: 0.95 !important;
+      }
     }
 
     /* Hidden message box */
     .hidden-message {
       display: none;
-      position: absolute;
-      bottom: 60px;
-      right: 15px;
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
       max-width: 350px;
       background: rgba(255, 255, 255, 0.97);
       color: #333;
@@ -127,7 +223,32 @@
       box-shadow: 0 6px 15px rgba(0,0,0,0.3);
       animation: fadeIn 0.8s ease forwards;
       white-space: pre-line;
-      z-index: 20;
+      z-index: 999;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Mobile responsiveness for hidden message */
+    @media (max-width: 768px) {
+      .hidden-message {
+        position: fixed;
+        bottom: 100px;
+        left: 15px;
+        right: 15px;
+        max-width: calc(100vw - 30px);
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hidden-message {
+        bottom: 90px;
+        left: 10px;
+        right: 10px;
+        max-width: calc(100vw - 20px);
+        padding: 1rem;
+        font-size: 0.85rem;
+      }
     }
 
     .hidden-message .close-btn {
@@ -190,16 +311,72 @@
     const hiddenMessage = document.getElementById("hiddenMessage");
     const closeBtn = document.getElementById("closeBtn");
 
+    // Debug function for mobile testing
+    function debugMobileInfo() {
+      console.log("Screen dimensions:", window.screen.width, "x", window.screen.height);
+      console.log("Viewport dimensions:", window.innerWidth, "x", window.innerHeight);
+      console.log("Device pixel ratio:", window.devicePixelRatio);
+      console.log("User agent:", navigator.userAgent);
+      console.log("Secret trigger element:", secretTrigger);
+      if (secretTrigger) {
+        const rect = secretTrigger.getBoundingClientRect();
+        console.log("Secret trigger position:", rect);
+        console.log("Secret trigger computed styles:", window.getComputedStyle(secretTrigger));
+      }
+    }
+
+    // Enhanced mobile detection and setup
+    function setupMobileOptimizations() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isNarzo = /Narzo|Realme/i.test(navigator.userAgent);
+      
+      if (isMobile || window.innerWidth <= 768) {
+        // Make button more visible on mobile
+        if (secretTrigger) {
+          secretTrigger.style.setProperty('opacity', '0.9', 'important');
+          secretTrigger.style.setProperty('background', 'rgba(255, 255, 255, 0.4)', 'important');
+          secretTrigger.style.setProperty('border', '3px solid rgba(255, 255, 255, 0.6)', 'important');
+          
+          if (isNarzo || window.innerHeight > 800) {
+            secretTrigger.style.setProperty('font-size', '40px', 'important');
+            secretTrigger.style.setProperty('width', '80px', 'important');
+            secretTrigger.style.setProperty('height', '80px', 'important');
+          }
+        }
+      }
+      
+      // Call debug function
+      debugMobileInfo();
+    }
+
     enterBtn.addEventListener("click", () => {
       welcomeScreen.style.opacity = "0";
       setTimeout(() => {
         welcomeScreen.style.display = "none";
         mainIframe.classList.add("active");
+        // Setup mobile optimizations after welcome screen is hidden
+        setTimeout(setupMobileOptimizations, 100);
       }, 1000);
     });
 
     // Toggle hidden message on flower click
-    secretTrigger.addEventListener("click", () => {
+    secretTrigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log("Secret trigger clicked!");
+      hiddenMessage.style.display =
+        hiddenMessage.style.display === "block" ? "none" : "block";
+    });
+
+    // Also add touch events for better mobile support
+    secretTrigger.addEventListener("touchstart", (e) => {
+      console.log("Secret trigger touched!");
+      e.preventDefault();
+      secretTrigger.style.transform = "scale(1.1)";
+    });
+
+    secretTrigger.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      secretTrigger.style.transform = "scale(1)";
       hiddenMessage.style.display =
         hiddenMessage.style.display === "block" ? "none" : "block";
     });
@@ -207,6 +384,11 @@
     // Close hidden message with ❌ button
     closeBtn.addEventListener("click", () => {
       hiddenMessage.style.display = "none";
+    });
+
+    // Initial setup
+    document.addEventListener("DOMContentLoaded", () => {
+      setupMobileOptimizations();
     });
   </script>
 </body>
