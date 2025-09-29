@@ -154,6 +154,53 @@
         #leaves i:before {
             z-index: -1;
         }
+        
+        /* Flower music button */
+        .music-flower {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            padding: 10px;
+            backdrop-filter: blur(5px);
+            animation: fadeInFlower 0.5s ease forwards;
+        }
+        
+        .music-flower:hover {
+            opacity: 1 !important;
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .music-flower.show {
+            opacity: 0.6;
+        }
+        
+        @keyframes fadeInFlower {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .music-flower {
+                font-size: 26px;
+                bottom: max(25px, env(safe-area-inset-bottom, 25px));
+                right: max(25px, env(safe-area-inset-right, 25px));
+            }
+        }
     </style>
 </head>
 <body>
@@ -219,16 +266,118 @@
         </div>
     </div>
     
+    <!-- Music flower (appears after delay) -->
+    <div class="music-flower" id="musicFlower" style="display: none;">🌸</div>
+    
+    <!-- Audio element for index.mp3 -->
+    <audio id="indexAudio" preload="auto">
+        <source src="assets/index.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
     <script>
         // Set current timestamp
         document.getElementById('timestamp').textContent = new Date().toISOString();
         
-        // Make API links functional
+        // Make API links functional - Direct navigation to directories
         document.querySelectorAll('.api-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                window.location.href = this.getAttribute('href');
+                const href = this.getAttribute('href');
+                // Direct navigation to the directory path
+                if (href.includes('memories')) {
+                    window.location.href = 'api/memories/';
+                } else if (href.includes('journey')) {
+                    window.location.href = 'api/journey/';
+                }
             });
+        });
+        
+        // Flower music functionality
+        const musicFlower = document.getElementById('musicFlower');
+        const indexAudio = document.getElementById('indexAudio');
+        let playCount = 0;
+        let isPlaying = false;
+        let hasStartedSession = false;
+        
+        // Show flower after 4 seconds
+        setTimeout(() => {
+            musicFlower.style.display = 'block';
+            setTimeout(() => {
+                musicFlower.classList.add('show');
+            }, 100);
+        }, 4000);
+        
+        // Update flower appearance based on play state
+        function updateFlowerAppearance() {
+            if (isPlaying) {
+                musicFlower.innerHTML = '⏸️'; // Pause icon
+                musicFlower.style.background = 'rgba(255, 100, 150, 0.8)';
+            } else {
+                musicFlower.innerHTML = '🌸'; // Play icon (flower)
+                musicFlower.style.background = 'rgba(255, 255, 255, 0.8)';
+            }
+        }
+        
+        // Handle flower click - Play/Pause toggle
+        musicFlower.addEventListener('click', () => {
+            if (!hasStartedSession) {
+                // First click - start new session
+                playCount = 0;
+                indexAudio.currentTime = 0;
+                indexAudio.play();
+                isPlaying = true;
+                hasStartedSession = true;
+            } else if (isPlaying) {
+                // Pause the music
+                indexAudio.pause();
+                isPlaying = false;
+            } else {
+                // Resume the music from current position
+                indexAudio.play();
+                isPlaying = true;
+            }
+            
+            updateFlowerAppearance();
+            
+            // Visual feedback
+            musicFlower.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                musicFlower.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Handle audio end - play maximum 2 times
+        indexAudio.addEventListener('ended', () => {
+            playCount++;
+            if (playCount < 2) {
+                indexAudio.currentTime = 0;
+                indexAudio.play();
+                isPlaying = true;
+            } else {
+                // Session complete - reset everything
+                playCount = 0;
+                isPlaying = false;
+                hasStartedSession = false;
+            }
+            updateFlowerAppearance();
+        });
+        
+        // Handle play event
+        indexAudio.addEventListener('play', () => {
+            isPlaying = true;
+            updateFlowerAppearance();
+        });
+        
+        // Handle pause event
+        indexAudio.addEventListener('pause', () => {
+            isPlaying = false;
+            updateFlowerAppearance();
+        });
+        
+        // Handle audio errors
+        indexAudio.addEventListener('error', (e) => {
+            console.warn('Audio file not found or cannot be played:', e);
         });
     </script>
 </body>
