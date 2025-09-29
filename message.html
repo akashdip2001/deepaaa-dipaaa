@@ -332,6 +332,19 @@
   
   #leaves i {
     z-index: -1;
+    /* Make animations slower - from 5s to 8s */
+    -webkit-animation-duration: 8s !important;
+    animation-duration: 8s !important;
+  }
+  
+  #leaves i:nth-of-type(2n) {
+    -webkit-animation-duration: 8s !important;
+    animation-duration: 8s !important;
+  }
+  
+  #leaves i:nth-of-type(3n) {
+    -webkit-animation-duration: 8s !important;
+    animation-duration: 8s !important;
   }
   
   #leaves i:before {
