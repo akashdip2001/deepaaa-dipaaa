@@ -1,0 +1,89 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Secret Journey Found...</title>
+    <meta http-equiv="refresh" content="3; url=../../message.html">
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+        }
+        .title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+        .countdown {
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">🚀 Journey Portal Unlocked!</div>
+        <div class="message">
+            <div>✨ Congratulations, Developer! ✨</div>
+            <div style="margin: 15px 0;">You found the secret @RequestMapping path!</div>
+            <div style="font-size: 0.9rem; opacity: 0.8;">
+                Only someone familiar with Spring Boot would check API endpoints from an error page...
+            </div>
+        </div>
+        <div class="countdown">
+            Accessing hidden content in <span id="countdown">3</span> seconds...
+        </div>
+    </div>
+    
+    <script>
+        let count = 3;
+        const countElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            count--;
+            countElement.textContent = count;
+            if (count <= 0) {
+                clearInterval(timer);
+                countElement.textContent = 'NOW!';
+                setTimeout(() => {
+                    window.location.href = '../../message.html';
+                }, 500);
+            }
+        }, 1000);
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0; url=next.html">
+<title>Redirecting...</title>
+</head>
+<body>
+<script type="text/javascript">
+    window.location.href = "../../message.html";
+</script>
+</body>
+</html>
